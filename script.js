@@ -17,7 +17,7 @@ function updateCountdown() {
   const now = new Date().getTime();
   const distance = countdownDate - now;
 
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const days = Math.floor(distance / (100 * 60 * 60 * 24));
   const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((distance % (1000 * 60)) / 1000);
@@ -53,54 +53,68 @@ function resizeCanvas() {
 resizeCanvas();
 
 const particles = [];
-const particleCount = 150;
+const particleCount = 120;
 
 class Particle {
   constructor() {
+    this.reset(true);
+  }
+
+  reset(init = false) {
     this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.vx = (Math.random() - 0.5) * 2;
-    this.vy = (Math.random() - 0.5) * 2;
-    this.radius = Math.random() * 3 + 2;
+    this.y = init ? Math.random() * canvas.height : -(Math.random() * 20 + 5);
+    this.radius = Math.random() * 3 + 1.5;
+    this.vy = Math.random() * 0.6 + 0.3; 
+    this.angle = Math.random() * Math.PI * 2; 
+    this.angularSpeed = Math.random() * 0.02 + 0.005;
+    this.sway = Math.random() * 0.6 + 0.4;
   }
 
   update() {
-    this.x += this.vx;
+    // balanço horizontal suave e queda vertical
+    this.angle += this.angularSpeed;
+    this.x += Math.sin(this.angle) * this.sway;
     this.y += this.vy;
 
-    if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-    if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+    // reaparecer no topo quando sair embaixo
+    if (this.y - this.radius > canvas.height) {
+      this.reset(false);
+    }
+
+    // manutenção dentro dos limites horizontais
+    if (this.x < -50) this.x = canvas.width + 50;
+    if (this.x > canvas.width + 50) this.x = -50;
   }
 
   draw() {
+    // floco principal: círculo branco suave
+    ctx.save();
+    ctx.fillStyle = 'rgba(255,255,255,0.95)';
+    ctx.shadowColor = 'rgba(255,255,255,0.6)';
+    ctx.shadowBlur = Math.max(0, this.radius * 2);
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(49, 234, 137, 0.5)';
     ctx.fill();
+    ctx.restore();
+
+    // detalhe em forma de cruz para lembrar flocos
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.angle);
+    ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+    ctx.lineWidth = 0.8;
+    ctx.beginPath();
+    ctx.moveTo(-this.radius * 1.5, 0);
+    ctx.lineTo(this.radius * 1.5, 0);
+    ctx.moveTo(0, -this.radius * 1.5);
+    ctx.lineTo(0, this.radius * 1.5);
+    ctx.stroke();
+    ctx.restore();
   }
 }
 
 for (let i = 0; i < particleCount; i++) {
   particles.push(new Particle());
-}
-
-function connectParticles() {
-  for (let i = 0; i < particles.length; i++) {
-    for (let j = i + 1; j < particles.length; j++) {
-      const dx = particles[i].x - particles[j].x;
-      const dy = particles[i].y - particles[j].y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-
-      if (distance < 120) {
-        ctx.beginPath();
-        ctx.strokeStyle = `rgba(49, 234, 137, ${0.4 * (1 - distance / 120)})`;
-        ctx.lineWidth = 1;
-        ctx.moveTo(particles[i].x, particles[i].y);
-        ctx.lineTo(particles[j].x, particles[j].y);
-        ctx.stroke();
-      }
-    }
-  }
 }
 
 function animate() {
@@ -111,15 +125,13 @@ function animate() {
     particle.draw();
   });
 
-  connectParticles();
-
+  // sem conexão entre partículas — são flocos de neve
   requestAnimationFrame(animate);
 }
 
 animate();
 
 window.addEventListener('resize', resizeCanvas);
-
 // Update canvas height when content changes
 const resizeObserver = new ResizeObserver(resizeCanvas);
 resizeObserver.observe(document.body);
@@ -157,7 +169,7 @@ function showToast(message) {
     position: fixed;
     top: 20px;
     right: 20px;
-    background: #31EA89;
+    background: #f1c40f;
     color: white;
     padding: 15px 25px;
     border-radius: 8px;
@@ -191,7 +203,7 @@ function renderProducts(products) {
   if (!grid) return;
 
   grid.innerHTML = '';
-  const items = products.slice(0, 3);
+  const items = products;
 
   items.forEach(p => {
     const discountCalc = (p && p.old_price && p.new_price)
@@ -246,10 +258,9 @@ async function loadProducts() {
     if (typeof createClient === 'function' && cfg.url && cfg.anonKey) {
       const client = createClient(cfg.url, cfg.anonKey);
       const { data, error } = await client
-        .from('products')
+        .from('natal')
         .select('*')
         .order('created_at', { ascending: false })
-        .limit(3);
 
       if (error) throw error;
       if (Array.isArray(data) && data.length) {

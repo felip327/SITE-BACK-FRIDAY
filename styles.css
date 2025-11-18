@@ -9,7 +9,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Arial', sans-serif;
-  background: #000000;
+  background: #c0392b;
   color: #ffffff;
   overflow-x: hidden;
   height: 100%;
@@ -60,7 +60,6 @@ html {
   font-weight: bold;
   margin: 0 0 20px 0;
   letter-spacing: 8px;
-  text-shadow: 0 0 20px rgba(49, 234, 137, 0.8);
   animation: pulse 2s ease-in-out infinite;
 }
 
@@ -89,7 +88,7 @@ html {
   /* Cartões do contador, com fundo translúcido e borda verde */
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
-  border: 2px solid #31EA89;
+  border: 2px solid #f1c40f;
   border-radius: 12px;
   padding: 20px 30px;
   min-width: 120px;
@@ -100,7 +99,7 @@ html {
   /* Número grande do contador */
   font-size: 48px;
   font-weight: bold;
-  color: #31EA89;
+  color: #f1c40f;
   display: block;
   line-height: 1;
 }
@@ -128,7 +127,7 @@ html {
   font-size: 42px;
   font-weight: bold;
   margin: 0 0 50px 0;
-  color: #31EA89;
+  color: #f1c40f;
 }
 
 .products-grid {
@@ -142,7 +141,7 @@ html {
 
 .product-card {
   /* Cartão de produto com hover animado */
-  background: #1a1a1a;
+  background: #f5f5f5;
   border-radius: 16px;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -152,14 +151,14 @@ html {
 .product-card:hover {
   transform: translateY(-10px);
   box-shadow: 0 20px 40px rgba(49, 234, 137, 0.4);
-  border-color: #31EA89;
+  border-color: #f1c40f;
 }
 
 .product-image {
   /* Área da imagem do produto: usamos emoji centralizado */
   width: 100%;
   height: 250px;
-  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  background: linear-gradient(135deg, #ff6161 0%, #e4e4e4 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -172,13 +171,13 @@ html {
   position: absolute;
   top: 15px;
   right: 15px;
-  background: #31EA89;
+  background: #f1c40f;
   color: #ffffff;
   padding: 8px 16px;
   border-radius: 25px;
   font-weight: bold;
   font-size: 16px;
-  box-shadow: 0 4px 12px rgba(49, 234, 137, 0.5);
+  box-shadow: 0 4px 12px rgb(231, 234, 49);
 }
 
 .product-info {
@@ -191,7 +190,7 @@ html {
   font-size: 24px;
   font-weight: bold;
   margin: 0 0 15px 0;
-  color: #ffffff;
+  color: #000000;
 }
 
 .price-container {
@@ -206,6 +205,7 @@ html {
   /* Preço antigo riscado, com menos destaque */
   font-size: 18px;
   text-decoration: line-through;
+  color: #7f8c8d;
   opacity: 0.5;
 }
 
@@ -213,14 +213,14 @@ html {
   /* Preço novo em destaque (verde) */
   font-size: 32px;
   font-weight: bold;
-  color: #31EA89;
+  color: #f1c40f;
 }
 
 .buy-button {
   /* Botão de compra ocupando toda a largura */
   width: 100%;
   padding: 15px;
-  background: #31EA89;
+  background: #f1c40f;
   color: #ffffff;
   border: none;
   border-radius: 8px;
@@ -234,7 +234,7 @@ html {
 
 .buy-button:hover {
   /* Efeito visual ao passar o mouse no botão */
-  background: #28d878;
+  background: #f1c40f;
   transform: translateY(-2px);
 }
 
@@ -253,7 +253,7 @@ html {
 }
 
 .buy-button:hover {
-  background: #28c970;
+  background: #f1c40f;
   transform: scale(1.05);
 }
 
@@ -297,7 +297,7 @@ html {
 }
 
 .buy-button:hover {
-  background: #28c970;
+  background: #f1c40f;
   transform: scale(1.05);
 }
 
